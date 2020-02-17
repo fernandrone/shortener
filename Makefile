@@ -1,4 +1,8 @@
-.PHONY: bootstrap env deploy synth
+.PHONY: all bootstrap deploy env synth
+
+all:
+	$(MAKE) synth
+	$(MAKE) deploy
 
 # displays the aws environment
 env:
@@ -12,7 +16,7 @@ bootstrap:
 deploy:
 	cdk deploy
 
-# builds the application and then sunthesizes and prints the CloudFormation template for this stack
+# builds the application and then synthesizes and prints the CloudFormation template for this stack
 synth:
 	npm run build
 	cdk synth

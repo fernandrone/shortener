@@ -1,18 +1,30 @@
-import * as sns from '@aws-cdk/aws-sns';
-import * as subs from '@aws-cdk/aws-sns-subscriptions';
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as cdk from '@aws-cdk/core';
+import * as api from "@aws-cdk/aws-apigateway";
+import * as core from "@aws-cdk/core";
+import * as lambda from "@aws-cdk/aws-lambda";
+import * as path from "path";
 
-export class ShortenerStack extends cdk.Stack {
-  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+export class ShortenerStack extends core.Stack {
+  readonly backend: lambda.Function;
+  readonly api: api.LambdaRestApi;
+
+  constructor(scope: core.App, id: string, props?: core.StackProps) {
     super(scope, id, props);
 
-    const queue = new sqs.Queue(this, 'ShortenerQueue', {
-      visibilityTimeout: cdk.Duration.seconds(300)
+    this.backend = new lambda.Function(this, "shortenerBackend", {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: "index.handler",
+      code: lambda.Code.fromAsset(path.join(__dirname, "lambda"))
     });
 
-    const topic = new sns.Topic(this, 'ShortenerTopic');
+    // TODO add a custom domain with certs
+    // TODO add usage plan
+    this.api = new api.LambdaRestApi(this, "shortenerAPI", {
+      handler: this.backend,
+      proxy: false
+    });
+    
+    this.api.root.addMethod("GET");
 
-    topic.addSubscription(new subs.SqsSubscription(queue));
+    core.Tag.add(this, "project", "shortener");
   }
 }
