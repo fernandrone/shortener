@@ -1,29 +1,41 @@
-import * as api from "@aws-cdk/aws-apigateway";
+import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as core from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as path from "path";
+import { Period } from "@aws-cdk/aws-apigateway";
 
 export class ShortenerStack extends core.Stack {
-  readonly backend: lambda.Function;
-  readonly api: api.LambdaRestApi;
-
   constructor(scope: core.App, id: string, props?: core.StackProps) {
     super(scope, id, props);
 
-    this.backend = new lambda.Function(this, "shortenerBackend", {
+    const backend = new lambda.Function(this, "shortenerBackend", {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(path.join(__dirname, "lambda"))
     });
 
-    // TODO add a custom domain with certs
-    // TODO add usage plan
-    this.api = new api.LambdaRestApi(this, "shortenerAPI", {
-      handler: this.backend,
-      proxy: false
+    const api = new apigateway.RestApi(this, "shortenerAPI", {});
+    const integration = new apigateway.LambdaIntegration(backend);
+    const key = api.addApiKey("apiKey");
+
+    api.root.addMethod("GET", integration, {
+      apiKeyRequired: true
     });
-    
-    this.api.root.addMethod("GET");
+
+    // will keep us under 1M requests/month
+    api.addUsagePlan("Free", {
+      name: "Free",
+      description: "Plan to guarantee that we won't go over AWS Free Tier",
+      apiKey: key,
+      quota: {
+        limit: 3000,
+        period: Period.DAY
+      },
+      throttle: {
+        rateLimit: 50,
+        burstLimit: 100
+      }
+    });
 
     core.Tag.add(this, "project", "shortener");
   }

@@ -1,4 +1,4 @@
-.PHONY: all bootstrap deploy env synth
+.PHONY: all bootstrap deploy env test synth
 
 all:
 	$(MAKE) synth
@@ -15,6 +15,9 @@ bootstrap:
 # deploys the stack into your AWS account
 deploy:
 	cdk deploy
+
+test:
+	npm test
 
 # builds the application and then synthesizes and prints the CloudFormation template for this stack
 synth:

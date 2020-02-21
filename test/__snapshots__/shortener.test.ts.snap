@@ -1,0 +1,417 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lambda Function Created 1`] = `
+Object {
+  "Outputs": Object {
+    "shortenerAPIEndpointD2575410": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "https://",
+            Object {
+              "Ref": "shortenerAPID8E48A72",
+            },
+            ".execute-api.",
+            Object {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            Object {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            Object {
+              "Ref": "shortenerAPIDeploymentStageprod26C06356",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
+  "Parameters": Object {
+    "AssetParametersb4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542ArtifactHash1AA14015": Object {
+      "Description": "Artifact hash for asset \\"b4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542\\"",
+      "Type": "String",
+    },
+    "AssetParametersb4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542S3BucketE845E3FB": Object {
+      "Description": "S3 bucket for asset \\"b4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542\\"",
+      "Type": "String",
+    },
+    "AssetParametersb4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542S3VersionKeyE1476E9F": Object {
+      "Description": "S3 key for asset version \\"b4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "shortenerAPIAccount4DD89EBF": Object {
+      "DependsOn": Array [
+        "shortenerAPID8E48A72",
+      ],
+      "Properties": Object {
+        "CloudWatchRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "shortenerAPICloudWatchRole8A79B60B",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+    },
+    "shortenerAPICloudWatchRole8A79B60B": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "shortenerAPID8E48A72": Object {
+      "Properties": Object {
+        "Name": "shortenerAPI",
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "shortenerAPIDeployment1BF02EFDd87e73c9dc28e6e7706539daa56b0ff8": Object {
+      "DependsOn": Array [
+        "shortenerAPIGET9DBD2395",
+      ],
+      "Properties": Object {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": Object {
+          "Ref": "shortenerAPID8E48A72",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "shortenerAPIDeploymentStageprod26C06356": Object {
+      "Properties": Object {
+        "DeploymentId": Object {
+          "Ref": "shortenerAPIDeployment1BF02EFDd87e73c9dc28e6e7706539daa56b0ff8",
+        },
+        "RestApiId": Object {
+          "Ref": "shortenerAPID8E48A72",
+        },
+        "StageName": "prod",
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "shortenerAPIFreeD1B85EAB": Object {
+      "Properties": Object {
+        "Description": "Plan to guarantee that we won't go over AWS Free Tier",
+        "Quota": Object {
+          "Limit": 3000,
+          "Period": "MONTH",
+        },
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+        "Throttle": Object {
+          "BurstLimit": 100,
+          "RateLimit": 50,
+        },
+        "UsagePlanName": "Free",
+      },
+      "Type": "AWS::ApiGateway::UsagePlan",
+    },
+    "shortenerAPIFreeUsagePlanKeyResourceBA3B4319": Object {
+      "Properties": Object {
+        "KeyId": Object {
+          "Ref": "shortenerAPIapiKey05D90B60",
+        },
+        "KeyType": "API_KEY",
+        "UsagePlanId": Object {
+          "Ref": "shortenerAPIFreeD1B85EAB",
+        },
+      },
+      "Type": "AWS::ApiGateway::UsagePlanKey",
+    },
+    "shortenerAPIGET9DBD2395": Object {
+      "Properties": Object {
+        "ApiKeyRequired": true,
+        "AuthorizationType": "NONE",
+        "HttpMethod": "GET",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "shortenerBackendBFAB597E",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Fn::GetAtt": Array [
+            "shortenerAPID8E48A72",
+            "RootResourceId",
+          ],
+        },
+        "RestApiId": Object {
+          "Ref": "shortenerAPID8E48A72",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "shortenerAPIGETApiPermissionMyTestStackshortenerAPIA32CAD80GETB5E72F51": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "shortenerBackendBFAB597E",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "shortenerAPID8E48A72",
+              },
+              "/",
+              Object {
+                "Ref": "shortenerAPIDeploymentStageprod26C06356",
+              },
+              "/GET/",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "shortenerAPIGETApiPermissionTestMyTestStackshortenerAPIA32CAD80GET47CCA933": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "shortenerBackendBFAB597E",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "shortenerAPID8E48A72",
+              },
+              "/test-invoke-stage/GET/",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "shortenerAPIapiKey05D90B60": Object {
+      "Properties": Object {
+        "Enabled": true,
+        "StageKeys": Array [
+          Object {
+            "RestApiId": Object {
+              "Ref": "shortenerAPID8E48A72",
+            },
+            "StageName": Object {
+              "Ref": "shortenerAPIDeploymentStageprod26C06356",
+            },
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+      },
+      "Type": "AWS::ApiGateway::ApiKey",
+    },
+    "shortenerBackendBFAB597E": Object {
+      "DependsOn": Array [
+        "shortenerBackendServiceRoleD10FFAB4",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersb4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542S3BucketE845E3FB",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersb4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542S3VersionKeyE1476E9F",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersb4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542S3VersionKeyE1476E9F",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "shortenerBackendServiceRoleD10FFAB4",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "shortenerBackendServiceRoleD10FFAB4": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+  },
+}
+`;
