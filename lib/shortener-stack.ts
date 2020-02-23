@@ -28,7 +28,7 @@ export class ShortenerStack extends core.Stack {
       description: "Plan to guarantee that we won't go over AWS Free Tier",
       apiKey: key,
       quota: {
-        limit: 3000,
+        limit: 30000,
         period: Period.DAY
       },
       throttle: {
