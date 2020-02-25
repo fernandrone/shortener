@@ -12,11 +12,7 @@ Object {
             Object {
               "Ref": "shortenerAPID8E48A72",
             },
-            ".execute-api.",
-            Object {
-              "Ref": "AWS::Region",
-            },
-            ".",
+            ".execute-api.us-west-2.",
             Object {
               "Ref": "AWS::URLSuffix",
             },
@@ -29,18 +25,37 @@ Object {
         ],
       },
     },
+    "shortenerOrigin": Object {
+      "Description": "The value of the custom shortener origin",
+      "Export": Object {
+        "Name": "ShortenerCustomOrigin",
+      },
+      "Value": "https://fdr.one",
+    },
   },
   "Parameters": Object {
-    "AssetParametersb4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542ArtifactHash1AA14015": Object {
-      "Description": "Artifact hash for asset \\"b4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542\\"",
+    "AssetParameters0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0ArtifactHashF8F836D1": Object {
+      "Description": "Artifact hash for asset \\"0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0\\"",
       "Type": "String",
     },
-    "AssetParametersb4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542S3BucketE845E3FB": Object {
-      "Description": "S3 bucket for asset \\"b4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542\\"",
+    "AssetParameters0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0S3Bucket0997A4A0": Object {
+      "Description": "S3 bucket for asset \\"0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0\\"",
       "Type": "String",
     },
-    "AssetParametersb4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542S3VersionKeyE1476E9F": Object {
-      "Description": "S3 key for asset version \\"b4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542\\"",
+    "AssetParameters0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0S3VersionKey83D9C166": Object {
+      "Description": "S3 key for asset version \\"0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0\\"",
+      "Type": "String",
+    },
+    "AssetParametersc2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705ArtifactHash6E20F2F1": Object {
+      "Description": "Artifact hash for asset \\"c2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705\\"",
+      "Type": "String",
+    },
+    "AssetParametersc2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705S3Bucket70659BF0": Object {
+      "Description": "S3 bucket for asset \\"c2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705\\"",
+      "Type": "String",
+    },
+    "AssetParametersc2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705S3VersionKey5A60729D": Object {
+      "Description": "S3 key for asset version \\"c2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705\\"",
       "Type": "String",
     },
   },
@@ -108,9 +123,10 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "shortenerAPIDeployment1BF02EFDd87e73c9dc28e6e7706539daa56b0ff8": Object {
+    "shortenerAPIDeployment1BF02EFDf0d5ebe8f606dbaa1721373ccbb54599": Object {
       "DependsOn": Array [
         "shortenerAPIGET9DBD2395",
+        "shortenerAPIOPTIONS8F59B854",
       ],
       "Properties": Object {
         "Description": "Automatically created by the RestApi construct",
@@ -123,8 +139,16 @@ Object {
     "shortenerAPIDeploymentStageprod26C06356": Object {
       "Properties": Object {
         "DeploymentId": Object {
-          "Ref": "shortenerAPIDeployment1BF02EFDd87e73c9dc28e6e7706539daa56b0ff8",
+          "Ref": "shortenerAPIDeployment1BF02EFDf0d5ebe8f606dbaa1721373ccbb54599",
         },
+        "MethodSettings": Array [
+          Object {
+            "HttpMethod": "*",
+            "ResourcePath": "/*",
+            "ThrottlingBurstLimit": 10,
+            "ThrottlingRateLimit": 5,
+          },
+        ],
         "RestApiId": Object {
           "Ref": "shortenerAPID8E48A72",
         },
@@ -138,42 +162,8 @@ Object {
       },
       "Type": "AWS::ApiGateway::Stage",
     },
-    "shortenerAPIFreeD1B85EAB": Object {
-      "Properties": Object {
-        "Description": "Plan to guarantee that we won't go over AWS Free Tier",
-        "Quota": Object {
-          "Limit": 3000,
-          "Period": "MONTH",
-        },
-        "Tags": Array [
-          Object {
-            "Key": "project",
-            "Value": "shortener",
-          },
-        ],
-        "Throttle": Object {
-          "BurstLimit": 100,
-          "RateLimit": 50,
-        },
-        "UsagePlanName": "Free",
-      },
-      "Type": "AWS::ApiGateway::UsagePlan",
-    },
-    "shortenerAPIFreeUsagePlanKeyResourceBA3B4319": Object {
-      "Properties": Object {
-        "KeyId": Object {
-          "Ref": "shortenerAPIapiKey05D90B60",
-        },
-        "KeyType": "API_KEY",
-        "UsagePlanId": Object {
-          "Ref": "shortenerAPIFreeD1B85EAB",
-        },
-      },
-      "Type": "AWS::ApiGateway::UsagePlanKey",
-    },
     "shortenerAPIGET9DBD2395": Object {
       "Properties": Object {
-        "ApiKeyRequired": true,
         "AuthorizationType": "NONE",
         "HttpMethod": "GET",
         "Integration": Object {
@@ -187,11 +177,7 @@ Object {
                 Object {
                   "Ref": "AWS::Partition",
                 },
-                ":apigateway:",
-                Object {
-                  "Ref": "AWS::Region",
-                },
-                ":lambda:path/2015-03-31/functions/",
+                ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
                 Object {
                   "Fn::GetAtt": Array [
                     "shortenerBackendBFAB597E",
@@ -233,15 +219,7 @@ Object {
               Object {
                 "Ref": "AWS::Partition",
               },
-              ":execute-api:",
-              Object {
-                "Ref": "AWS::Region",
-              },
-              ":",
-              Object {
-                "Ref": "AWS::AccountId",
-              },
-              ":",
+              ":execute-api:us-west-2:dummy:",
               Object {
                 "Ref": "shortenerAPID8E48A72",
               },
@@ -274,15 +252,7 @@ Object {
               Object {
                 "Ref": "AWS::Partition",
               },
-              ":execute-api:",
-              Object {
-                "Ref": "AWS::Region",
-              },
-              ":",
-              Object {
-                "Ref": "AWS::AccountId",
-              },
-              ":",
+              ":execute-api:us-west-2:dummy:",
               Object {
                 "Ref": "shortenerAPID8E48A72",
               },
@@ -293,36 +263,81 @@ Object {
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "shortenerAPIapiKey05D90B60": Object {
+    "shortenerAPIOPTIONS8F59B854": Object {
       "Properties": Object {
-        "Enabled": true,
-        "StageKeys": Array [
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": Object {
+          "IntegrationResponses": Array [
+            Object {
+              "ResponseParameters": Object {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'https://fdr.one'",
+                "method.response.header.Vary": "'Origin'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": Object {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": Array [
           Object {
-            "RestApiId": Object {
-              "Ref": "shortenerAPID8E48A72",
+            "ResponseParameters": Object {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Vary": true,
             },
-            "StageName": Object {
-              "Ref": "shortenerAPIDeploymentStageprod26C06356",
-            },
+            "StatusCode": "204",
           },
         ],
-        "Tags": Array [
-          Object {
-            "Key": "project",
-            "Value": "shortener",
-          },
-        ],
+        "ResourceId": Object {
+          "Fn::GetAtt": Array [
+            "shortenerAPID8E48A72",
+            "RootResourceId",
+          ],
+        },
+        "RestApiId": Object {
+          "Ref": "shortenerAPID8E48A72",
+        },
       },
-      "Type": "AWS::ApiGateway::ApiKey",
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "shortenerAliasRecordDDE56FDF": Object {
+      "Properties": Object {
+        "AliasTarget": Object {
+          "DNSName": Object {
+            "Fn::GetAtt": Array [
+              "shortenerCustomDomainDE8FD5C8",
+              "DistributionDomainName",
+            ],
+          },
+          "HostedZoneId": Object {
+            "Fn::GetAtt": Array [
+              "shortenerCustomDomainDE8FD5C8",
+              "DistributionHostedZoneId",
+            ],
+          },
+        },
+        "HostedZoneId": "DUMMY",
+        "Name": "fdr.one.",
+        "Type": "A",
+      },
+      "Type": "AWS::Route53::RecordSet",
     },
     "shortenerBackendBFAB597E": Object {
       "DependsOn": Array [
+        "shortenerBackendServiceRoleDefaultPolicy7DD91C30",
         "shortenerBackendServiceRoleD10FFAB4",
       ],
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParametersb4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542S3BucketE845E3FB",
+            "Ref": "AssetParametersc2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705S3Bucket70659BF0",
           },
           "S3Key": Object {
             "Fn::Join": Array [
@@ -335,7 +350,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersb4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542S3VersionKeyE1476E9F",
+                          "Ref": "AssetParametersc2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705S3VersionKey5A60729D",
                         },
                       ],
                     },
@@ -348,7 +363,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersb4b35ab6a1750033d16413674b950cc2240ef328be64196463510eff7ff53542S3VersionKeyE1476E9F",
+                          "Ref": "AssetParametersc2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705S3VersionKey5A60729D",
                         },
                       ],
                     },
@@ -356,6 +371,13 @@ Object {
                 },
               ],
             ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "DYNAMODB_TABLE": Object {
+              "Ref": "shortenerTable025392D9",
+            },
           },
         },
         "Handler": "index.handler",
@@ -411,6 +433,271 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
+    },
+    "shortenerBackendServiceRoleDefaultPolicy7DD91C30": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "shortenerTable025392D9",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Ref": "AWS::NoValue",
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "shortenerBackendServiceRoleDefaultPolicy7DD91C30",
+        "Roles": Array [
+          Object {
+            "Ref": "shortenerBackendServiceRoleD10FFAB4",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "shortenerCertCertificateRequestorFunctionE626283C": Object {
+      "DependsOn": Array [
+        "shortenerCertCertificateRequestorFunctionServiceRoleDefaultPolicy8E443F6F",
+        "shortenerCertCertificateRequestorFunctionServiceRole880ADB54",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0S3Bucket0997A4A0",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0S3VersionKey83D9C166",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0S3VersionKey83D9C166",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Handler": "index.certificateRequestHandler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "shortenerCertCertificateRequestorFunctionServiceRole880ADB54",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs10.x",
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "shortenerCertCertificateRequestorFunctionServiceRole880ADB54": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "shortenerCertCertificateRequestorFunctionServiceRoleDefaultPolicy8E443F6F": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "acm:RequestCertificate",
+                "acm:DescribeCertificate",
+                "acm:DeleteCertificate",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "route53:GetChange",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "route53:changeResourceRecordSets",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":route53:::hostedzone/DUMMY",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "shortenerCertCertificateRequestorFunctionServiceRoleDefaultPolicy8E443F6F",
+        "Roles": Array [
+          Object {
+            "Ref": "shortenerCertCertificateRequestorFunctionServiceRole880ADB54",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "shortenerCertCertificateRequestorResource9C94F867": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "DomainName": "fdr.one",
+        "HostedZoneId": "DUMMY",
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "shortenerCertCertificateRequestorFunctionE626283C",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::CloudFormation::CustomResource",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "shortenerCustomDomainDE8FD5C8": Object {
+      "Properties": Object {
+        "CertificateArn": Object {
+          "Fn::GetAtt": Array [
+            "shortenerCertCertificateRequestorResource9C94F867",
+            "Arn",
+          ],
+        },
+        "DomainName": "fdr.one",
+        "EndpointConfiguration": Object {
+          "Types": Array [
+            "EDGE",
+          ],
+        },
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+      },
+      "Type": "AWS::ApiGateway::DomainName",
+    },
+    "shortenerCustomDomainMapMyTestStackshortenerAPIA32CAD8091043B39": Object {
+      "Properties": Object {
+        "DomainName": Object {
+          "Ref": "shortenerCustomDomainDE8FD5C8",
+        },
+        "RestApiId": Object {
+          "Ref": "shortenerAPID8E48A72",
+        },
+        "Stage": Object {
+          "Ref": "shortenerAPIDeploymentStageprod26C06356",
+        },
+      },
+      "Type": "AWS::ApiGateway::BasePathMapping",
+    },
+    "shortenerTable025392D9": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "AttributeDefinitions": Array [
+          Object {
+            "AttributeName": "id",
+            "AttributeType": "S",
+          },
+        ],
+        "KeySchema": Array [
+          Object {
+            "AttributeName": "id",
+            "KeyType": "HASH",
+          },
+        ],
+        "ProvisionedThroughput": Object {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 1,
+        },
+        "TableName": "shortenedURLs",
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+      },
+      "Type": "AWS::DynamoDB::Table",
+      "UpdateReplacePolicy": "Retain",
     },
   },
 }

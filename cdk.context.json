@@ -1,4 +1,8 @@
 {
   "@aws-cdk/core:enableStackNameDuplicates": "true",
-  "aws-cdk:enableDiffNoFail": "true"
+  "aws-cdk:enableDiffNoFail": "true",
+  "hosted-zone:account=341417373162:domainName=fdr.one:privateZone=false:region=us-east-1": {
+    "Id": "/hostedzone/Z1FWWCDHU8GK01",
+    "Name": "fdr.one."
+  }
 }

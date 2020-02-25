@@ -1,42 +1,86 @@
-import * as apigateway from "@aws-cdk/aws-apigateway";
-import * as core from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as path from "path";
-import { Period } from "@aws-cdk/aws-apigateway";
+import * as apigateway from '@aws-cdk/aws-apigateway';
+import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import * as core from '@aws-cdk/core';
+import * as certmgr from '@aws-cdk/aws-certificatemanager';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as path from 'path';
+import * as route53 from '@aws-cdk/aws-route53';
+import * as targets from '@aws-cdk/aws-route53-targets';
 
 export class ShortenerStack extends core.Stack {
+  readonly domain = 'fdr.one';
+  readonly stage = 'prod';
+  readonly origin = 'https://' + this.domain;
+
   constructor(scope: core.App, id: string, props?: core.StackProps) {
     super(scope, id, props);
 
-    const backend = new lambda.Function(this, "shortenerBackend", {
-      runtime: lambda.Runtime.NODEJS_12_X,
-      handler: "index.handler",
-      code: lambda.Code.fromAsset(path.join(__dirname, "lambda"))
-    });
-
-    const api = new apigateway.RestApi(this, "shortenerAPI", {});
-    const integration = new apigateway.LambdaIntegration(backend);
-    const key = api.addApiKey("apiKey");
-
-    api.root.addMethod("GET", integration, {
-      apiKeyRequired: true
-    });
-
-    // will keep us under 1M requests/month
-    api.addUsagePlan("Free", {
-      name: "Free",
-      description: "Plan to guarantee that we won't go over AWS Free Tier",
-      apiKey: key,
-      quota: {
-        limit: 30000,
-        period: Period.DAY
+    const api = new apigateway.RestApi(this, 'shortenerAPI', {
+      // these will limit burst of requests that might increase our billing too much
+      deployOptions: {
+        stageName: this.stage,
+        throttlingRateLimit: 5,
+        throttlingBurstLimit: 10,
       },
-      throttle: {
-        rateLimit: 50,
-        burstLimit: 100
-      }
+      defaultCorsPreflightOptions: {
+        allowOrigins: [this.origin],
+      },
     });
 
-    core.Tag.add(this, "project", "shortener");
+    const hostedZone = route53.HostedZone.fromLookup(this, 'shortenerHostedZone', {
+      domainName: this.domain,
+      privateZone: false,
+    });
+
+    const certificate = new certmgr.DnsValidatedCertificate(this, 'shortenerCert', {
+      domainName: this.domain,
+      hostedZone,
+    });
+
+    const customDomain = new apigateway.DomainName(this, 'shortenerCustomDomain', {
+      domainName: this.domain,
+      certificate: certificate,
+      endpointType: apigateway.EndpointType.EDGE,
+    });
+
+    customDomain.addBasePathMapping(api);
+
+    new route53.ARecord(this, 'shortenerAliasRecord', {
+      zone: hostedZone,
+      target: route53.RecordTarget.fromAlias(
+        new targets.ApiGatewayDomain(customDomain),
+      ),
+    });
+
+    const table = new dynamodb.Table(this, 'shortenerTable', {
+      tableName: 'shortenedURLs',
+      partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PROVISIONED,
+      readCapacity: 5,
+      writeCapacity: 1,
+    });
+
+    const getFnc = new lambda.Function(this, 'shortenerBackend', {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, 'lambda-get')),
+      environment: {
+        DYNAMODB_TABLE: table.tableName,
+      },
+    });
+
+    // allow the lambda function to r/w date into the dynamodb table
+    table.grantReadData(getFnc);
+
+    // assign the 'lambda-get' function to the GET method
+    api.root.addMethod('GET', new apigateway.LambdaIntegration(getFnc));
+
+    new core.CfnOutput(this, 'shortenerOrigin', {
+      value: this.origin,
+      description: 'The value of the custom shortener origin',
+      exportName: 'ShortenerCustomOrigin',
+    });
+
+    core.Tag.add(this, 'project', 'shortener');
   }
 }

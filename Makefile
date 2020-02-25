@@ -10,10 +10,12 @@ env:
 
 # deploys the CDK toolkit stack into an AWS environment
 bootstrap:
-	cdk bootstrap aws://$$(aws sts get-caller-identity | jq -r .Account)/$$(aws configure get region)
+	cdk bootstrap aws://$$(aws sts get-caller-identity | jq -r .Account)/aws configure get region
 
 # deploys the stack into your AWS account
 deploy:
+	export CDK_DEFAULT_REGION=$$(aws configure get region)
+	export CDK_DEFAULT_ACCOUNT=$$(aws sts get-caller-identity | jq -r .Account)
 	cdk deploy
 
 test:
