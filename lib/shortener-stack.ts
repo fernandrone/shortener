@@ -54,7 +54,6 @@ export class ShortenerStack extends core.Stack {
 
     const table = new dynamodb.Table(this, 'shortenerTable', {
       partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
-      sortKey: { name: 'url', type: dynamodb.AttributeType.STRING },
       billingMode: dynamodb.BillingMode.PROVISIONED,
       readCapacity: 5,
       writeCapacity: 1,
