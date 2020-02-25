@@ -1,6 +1,7 @@
 import { DynamoDB } from 'aws-sdk';
 
 const ddb = new DynamoDB.DocumentClient();
+const domain = 'fdr.one';
 const key = 'id';
 const attr = 'url';
 const fallback = 'https://fernandrone.com';
@@ -11,25 +12,34 @@ if (!table) throw `'table' needed (set 'process.env.DYNAMODB_TABLE')`;
 export const handler = async (event: any = {}): Promise<any> => {
   console.info(`Event: ${JSON.stringify(event)}`);
 
-  // remove first and final '/' from url to sanitize string
-  const value = event.path.replace(/\/$/, '').replace(/^\//, '') as string;
+  if (!('requestContext' in event)) {
+    return forbidden(`Malformed request`);
+  }
 
-  console.info(`Received 'value' '${value}' (lenght: '${value.length}')`);
+  if (event.requestContext.domainName != domain) {
+    return forbidden(`Invalid domain '${event.requestContext.domainName}'`);
+  }
+
+  // remove first and final '/' from url to sanitize string
+  const resource = event.path.replace(/\/$/, '').replace(/^\//, '') as string;
+
+  console.info(`Received 'value' '${resource}' (lenght: '${resource.length}')`);
 
   // this quick check will block all '.php' and '.favico' requests
-  if (value.includes('.')) {
+  if (resource.includes('.')) {
+    console.error(`Invalid path/resource`);
     return abort();
   }
 
-  if (value.length < 2) {
+  if (resource.length < 2) {
     return redirect(fallback);
   }
 
-  console.info(`Will fetch data '${key}':'${value}' on table '${table}'`);
+  console.info(`Will fetch data '${key}':'${resource}' on table '${table}'`);
 
   const params = {
     Key: {
-      [key]: value,
+      [key]: resource,
     },
     TableName: table,
     AttributesToGet: [attr],
@@ -42,22 +52,39 @@ export const handler = async (event: any = {}): Promise<any> => {
     // use blocking (await) promises to wait for DynamoDB response
     data = await ddb.get(params).promise();
   } catch (err) {
-    console.error(`Error fetching data '${key}':'${value}' on table '${table}'`, err);
+    console.error(
+      `Error fetching data '${key}':'${resource}' on table '${table}'`,
+      err,
+    );
     return redirect(fallback);
   }
 
   console.info(
-    `Fetched ${JSON.stringify(data.Item)} for '${key}':'${value}' on table '${table}'`,
+    `Fetched ${JSON.stringify(
+      data.Item,
+    )} for '${key}':'${resource}' on table '${table}'`,
   );
 
   if (data.Item === undefined) {
-    console.error(`The data '${key}':'${value}' on table '${table}' is 'undefined'`);
+    console.error(`The data '${key}':'${resource}' on table '${table}' is 'undefined'`);
     return redirect(fallback);
   }
 
   console.info(`Retrieved Item: ${JSON.stringify(data.Item)}`);
   return redirect(data.Item[attr] as string);
 };
+
+function forbidden(err: string): any {
+  return response({
+    statusCode: 403,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      error: err,
+    }),
+  });
+}
 
 function abort(): any {
   return response({
@@ -67,9 +94,10 @@ function abort(): any {
 
 function redirect(url: string): any {
   return response({
-    statusCode: 302,
+    statusCode: 301,
     headers: {
-      Location: url,
+      'Location': url,
+      'Cache-Control': 'public, must-revalidate, max-age=86400',
     },
   });
 }

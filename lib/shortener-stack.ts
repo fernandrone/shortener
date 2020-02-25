@@ -24,6 +24,7 @@ export class ShortenerStack extends core.Stack {
       },
       defaultCorsPreflightOptions: {
         allowOrigins: [this.origin],
+        allowMethods: ['GET'],
       },
     });
 
@@ -84,7 +85,7 @@ export class ShortenerStack extends core.Stack {
     // allow the lambda function to r/w date into the dynamodb table
     table.grantReadData(getFnc);
 
-    new core.CfnOutput(this, 'shortenerOrigin', {
+    new core.CfnOutput(this, 'shortenerCustomOrigin', {
       value: this.origin,
       description: 'The value of the custom shortener origin',
       exportName: 'ShortenerCustomOrigin',
