@@ -6,13 +6,15 @@ const fallback = 'https://fernandrone.com';
 export const handler = async (event: any = {}): Promise<any> => {
   console.log(event);
 
-  if (!('path' in event) || event.path.length < 2) {
+  if (event.path.length < 2) {
     return redirect(fallback);
   }
 
   const params = {
     TableName: process.env.DYNAMODB_TABLE!,
-    Key: event.path,
+    Key: {
+      id: event.path,
+    },
   };
 
   ddb.get(params, function(err, data) {
@@ -25,15 +27,19 @@ export const handler = async (event: any = {}): Promise<any> => {
       return redirect(fallback);
     }
 
-    return redirect(data.Item['id']);
+    console.log(data.Item);
+
+    return redirect(data.Item['url']);
   });
 };
 
 function redirect(url: string) {
-  return {
+  const response = {
     statusCode: 302,
     headers: {
       Location: url,
     },
   };
+  console.log(response);
+  return response;
 }

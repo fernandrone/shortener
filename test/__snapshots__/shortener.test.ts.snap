@@ -46,16 +46,16 @@ Object {
       "Description": "S3 key for asset version \\"0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0\\"",
       "Type": "String",
     },
-    "AssetParametersc2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705ArtifactHash6E20F2F1": Object {
-      "Description": "Artifact hash for asset \\"c2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705\\"",
+    "AssetParameters7b9846a8888ddf8fb658a73267805b65d183b69ba0c05af0ddf231d42476e9faArtifactHash7E81F767": Object {
+      "Description": "Artifact hash for asset \\"7b9846a8888ddf8fb658a73267805b65d183b69ba0c05af0ddf231d42476e9fa\\"",
       "Type": "String",
     },
-    "AssetParametersc2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705S3Bucket70659BF0": Object {
-      "Description": "S3 bucket for asset \\"c2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705\\"",
+    "AssetParameters7b9846a8888ddf8fb658a73267805b65d183b69ba0c05af0ddf231d42476e9faS3Bucket164E9FB2": Object {
+      "Description": "S3 bucket for asset \\"7b9846a8888ddf8fb658a73267805b65d183b69ba0c05af0ddf231d42476e9fa\\"",
       "Type": "String",
     },
-    "AssetParametersc2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705S3VersionKey5A60729D": Object {
-      "Description": "S3 key for asset version \\"c2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705\\"",
+    "AssetParameters7b9846a8888ddf8fb658a73267805b65d183b69ba0c05af0ddf231d42476e9faS3VersionKeyCA148DD6": Object {
+      "Description": "S3 key for asset version \\"7b9846a8888ddf8fb658a73267805b65d183b69ba0c05af0ddf231d42476e9fa\\"",
       "Type": "String",
     },
   },
@@ -123,8 +123,11 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "shortenerAPIDeployment1BF02EFDf0d5ebe8f606dbaa1721373ccbb54599": Object {
+    "shortenerAPIDeployment1BF02EFDe1b1eb368f810c89fa746524fe9ad237": Object {
       "DependsOn": Array [
+        "shortenerAPIproxyGETC4CEEED1",
+        "shortenerAPIproxyOPTIONS7E5BFB22",
+        "shortenerAPIproxy57447FDA",
         "shortenerAPIGET9DBD2395",
         "shortenerAPIOPTIONS8F59B854",
       ],
@@ -139,7 +142,7 @@ Object {
     "shortenerAPIDeploymentStageprod26C06356": Object {
       "Properties": Object {
         "DeploymentId": Object {
-          "Ref": "shortenerAPIDeployment1BF02EFDf0d5ebe8f606dbaa1721373ccbb54599",
+          "Ref": "shortenerAPIDeployment1BF02EFDe1b1eb368f810c89fa746524fe9ad237",
         },
         "MethodSettings": Array [
           Object {
@@ -307,6 +310,160 @@ Object {
       },
       "Type": "AWS::ApiGateway::Method",
     },
+    "shortenerAPIproxy57447FDA": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "shortenerAPID8E48A72",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": Object {
+          "Ref": "shortenerAPID8E48A72",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "shortenerAPIproxyGETApiPermissionMyTestStackshortenerAPIA32CAD80GETproxy8C2D216D": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "shortenerBackendBFAB597E",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:dummy:",
+              Object {
+                "Ref": "shortenerAPID8E48A72",
+              },
+              "/",
+              Object {
+                "Ref": "shortenerAPIDeploymentStageprod26C06356",
+              },
+              "/GET/{proxy+}",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "shortenerAPIproxyGETApiPermissionTestMyTestStackshortenerAPIA32CAD80GETproxy3D873FA9": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "shortenerBackendBFAB597E",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-west-2:dummy:",
+              Object {
+                "Ref": "shortenerAPID8E48A72",
+              },
+              "/test-invoke-stage/GET/{proxy+}",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "shortenerAPIproxyGETC4CEEED1": Object {
+      "Properties": Object {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "GET",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "shortenerBackendBFAB597E",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Ref": "shortenerAPIproxy57447FDA",
+        },
+        "RestApiId": Object {
+          "Ref": "shortenerAPID8E48A72",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "shortenerAPIproxyOPTIONS7E5BFB22": Object {
+      "Properties": Object {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": Object {
+          "IntegrationResponses": Array [
+            Object {
+              "ResponseParameters": Object {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'https://fdr.one'",
+                "method.response.header.Vary": "'Origin'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": Object {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": Array [
+          Object {
+            "ResponseParameters": Object {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Vary": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": Object {
+          "Ref": "shortenerAPIproxy57447FDA",
+        },
+        "RestApiId": Object {
+          "Ref": "shortenerAPID8E48A72",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
     "shortenerAliasRecordDDE56FDF": Object {
       "Properties": Object {
         "AliasTarget": Object {
@@ -337,7 +494,7 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParametersc2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705S3Bucket70659BF0",
+            "Ref": "AssetParameters7b9846a8888ddf8fb658a73267805b65d183b69ba0c05af0ddf231d42476e9faS3Bucket164E9FB2",
           },
           "S3Key": Object {
             "Fn::Join": Array [
@@ -350,7 +507,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersc2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705S3VersionKey5A60729D",
+                          "Ref": "AssetParameters7b9846a8888ddf8fb658a73267805b65d183b69ba0c05af0ddf231d42476e9faS3VersionKeyCA148DD6",
                         },
                       ],
                     },
@@ -363,7 +520,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersc2945fd6904fced6a00c825b02118353df436c7378af32454b476d0ec8025705S3VersionKey5A60729D",
+                          "Ref": "AssetParameters7b9846a8888ddf8fb658a73267805b65d183b69ba0c05af0ddf231d42476e9faS3VersionKeyCA148DD6",
                         },
                       ],
                     },
@@ -677,18 +834,25 @@ Object {
             "AttributeName": "id",
             "AttributeType": "S",
           },
+          Object {
+            "AttributeName": "url",
+            "AttributeType": "S",
+          },
         ],
         "KeySchema": Array [
           Object {
             "AttributeName": "id",
             "KeyType": "HASH",
           },
+          Object {
+            "AttributeName": "url",
+            "KeyType": "RANGE",
+          },
         ],
         "ProvisionedThroughput": Object {
           "ReadCapacityUnits": 5,
           "WriteCapacityUnits": 1,
         },
-        "TableName": "shortenedURLs",
         "Tags": Array [
           Object {
             "Key": "project",

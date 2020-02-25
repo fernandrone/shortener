@@ -53,8 +53,8 @@ export class ShortenerStack extends core.Stack {
     });
 
     const table = new dynamodb.Table(this, 'shortenerTable', {
-      tableName: 'shortenedURLs',
       partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'url', type: dynamodb.AttributeType.STRING },
       billingMode: dynamodb.BillingMode.PROVISIONED,
       readCapacity: 5,
       writeCapacity: 1,
@@ -69,11 +69,21 @@ export class ShortenerStack extends core.Stack {
       },
     });
 
+    // assign the 'lambda-get' function to the GET method
+    const integration = new apigateway.LambdaIntegration(getFnc, {
+      proxy: true,
+    });
+
+    // add greedy proxy
+    const proxy = api.root.addProxy({
+      defaultIntegration: integration,
+      anyMethod: false,
+    });
+
+    proxy.addMethod('GET', integration);
+
     // allow the lambda function to r/w date into the dynamodb table
     table.grantReadData(getFnc);
-
-    // assign the 'lambda-get' function to the GET method
-    api.root.addMethod('GET', new apigateway.LambdaIntegration(getFnc));
 
     new core.CfnOutput(this, 'shortenerOrigin', {
       value: this.origin,
