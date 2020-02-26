@@ -26,28 +26,293 @@ Object {
       },
     },
     "shortenerCustomOrigin": Object {
-      "Description": "The value of the custom shortener origin",
-      "Export": Object {
-        "Name": "ShortenerCustomOrigin",
-      },
       "Value": "https://fdr.one",
+    },
+    "shortenerFaviconURL": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "https://s3.us-west-2.",
+            Object {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            Object {
+              "Ref": "AssetParameterscda4185f6b6e86f41a47c64d92ac02b802e60e12a715d073ce251b5798fe932aS3Bucket738140FB",
+            },
+            "/",
+            Object {
+              "Fn::Select": Array [
+                0,
+                Object {
+                  "Fn::Split": Array [
+                    "||",
+                    Object {
+                      "Ref": "AssetParameterscda4185f6b6e86f41a47c64d92ac02b802e60e12a715d073ce251b5798fe932aS3VersionKey64831667",
+                    },
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Fn::Select": Array [
+                1,
+                Object {
+                  "Fn::Split": Array [
+                    "||",
+                    Object {
+                      "Ref": "AssetParameterscda4185f6b6e86f41a47c64d92ac02b802e60e12a715d073ce251b5798fe932aS3VersionKey64831667",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        ],
+      },
     },
   },
   "Parameters": Object {
-    "AssetParametersf8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6dArtifactHash6C0EC269": Object {
-      "Description": "Artifact hash for asset \\"f8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6d\\"",
+    "AssetParameters8ac1f64e10898dad56cc8b357e40b7a3aa5708bc5aec546718c66c605b3c438cArtifactHash52F792CF": Object {
+      "Description": "Artifact hash for asset \\"8ac1f64e10898dad56cc8b357e40b7a3aa5708bc5aec546718c66c605b3c438c\\"",
       "Type": "String",
     },
-    "AssetParametersf8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6dS3BucketF8F50D82": Object {
-      "Description": "S3 bucket for asset \\"f8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6d\\"",
+    "AssetParameters8ac1f64e10898dad56cc8b357e40b7a3aa5708bc5aec546718c66c605b3c438cS3BucketE9317EA1": Object {
+      "Description": "S3 bucket for asset \\"8ac1f64e10898dad56cc8b357e40b7a3aa5708bc5aec546718c66c605b3c438c\\"",
       "Type": "String",
     },
-    "AssetParametersf8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6dS3VersionKeyA7FF3015": Object {
-      "Description": "S3 key for asset version \\"f8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6d\\"",
+    "AssetParameters8ac1f64e10898dad56cc8b357e40b7a3aa5708bc5aec546718c66c605b3c438cS3VersionKey65CA1E21": Object {
+      "Description": "S3 key for asset version \\"8ac1f64e10898dad56cc8b357e40b7a3aa5708bc5aec546718c66c605b3c438c\\"",
+      "Type": "String",
+    },
+    "AssetParametersa9125fa9a40550c71cde90bd478cc23091e868067a12380c1df0827d013ad2ffArtifactHash08605F5E": Object {
+      "Description": "Artifact hash for asset \\"a9125fa9a40550c71cde90bd478cc23091e868067a12380c1df0827d013ad2ff\\"",
+      "Type": "String",
+    },
+    "AssetParametersa9125fa9a40550c71cde90bd478cc23091e868067a12380c1df0827d013ad2ffS3Bucket848A1F31": Object {
+      "Description": "S3 bucket for asset \\"a9125fa9a40550c71cde90bd478cc23091e868067a12380c1df0827d013ad2ff\\"",
+      "Type": "String",
+    },
+    "AssetParametersa9125fa9a40550c71cde90bd478cc23091e868067a12380c1df0827d013ad2ffS3VersionKey983DBE96": Object {
+      "Description": "S3 key for asset version \\"a9125fa9a40550c71cde90bd478cc23091e868067a12380c1df0827d013ad2ff\\"",
+      "Type": "String",
+    },
+    "AssetParametersba60cbb49b876b2b5e6eddd103e4aeebf0fdabe220fecd9ba54cfabb0d3200d5ArtifactHash06DC1F30": Object {
+      "Description": "Artifact hash for asset \\"ba60cbb49b876b2b5e6eddd103e4aeebf0fdabe220fecd9ba54cfabb0d3200d5\\"",
+      "Type": "String",
+    },
+    "AssetParametersba60cbb49b876b2b5e6eddd103e4aeebf0fdabe220fecd9ba54cfabb0d3200d5S3Bucket6FE22E6A": Object {
+      "Description": "S3 bucket for asset \\"ba60cbb49b876b2b5e6eddd103e4aeebf0fdabe220fecd9ba54cfabb0d3200d5\\"",
+      "Type": "String",
+    },
+    "AssetParametersba60cbb49b876b2b5e6eddd103e4aeebf0fdabe220fecd9ba54cfabb0d3200d5S3VersionKeyD29C4406": Object {
+      "Description": "S3 key for asset version \\"ba60cbb49b876b2b5e6eddd103e4aeebf0fdabe220fecd9ba54cfabb0d3200d5\\"",
+      "Type": "String",
+    },
+    "AssetParameterscda4185f6b6e86f41a47c64d92ac02b802e60e12a715d073ce251b5798fe932aArtifactHash1C0F0A70": Object {
+      "Description": "Artifact hash for asset \\"cda4185f6b6e86f41a47c64d92ac02b802e60e12a715d073ce251b5798fe932a\\"",
+      "Type": "String",
+    },
+    "AssetParameterscda4185f6b6e86f41a47c64d92ac02b802e60e12a715d073ce251b5798fe932aS3Bucket738140FB": Object {
+      "Description": "S3 bucket for asset \\"cda4185f6b6e86f41a47c64d92ac02b802e60e12a715d073ce251b5798fe932a\\"",
+      "Type": "String",
+    },
+    "AssetParameterscda4185f6b6e86f41a47c64d92ac02b802e60e12a715d073ce251b5798fe932aS3VersionKey64831667": Object {
+      "Description": "S3 key for asset version \\"cda4185f6b6e86f41a47c64d92ac02b802e60e12a715d073ce251b5798fe932a\\"",
       "Type": "String",
     },
   },
   "Resources": Object {
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": Object {
+      "DependsOn": Array [
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersa9125fa9a40550c71cde90bd478cc23091e868067a12380c1df0827d013ad2ffS3Bucket848A1F31",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersa9125fa9a40550c71cde90bd478cc23091e868067a12380c1df0827d013ad2ffS3VersionKey983DBE96",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersa9125fa9a40550c71cde90bd478cc23091e868067a12380c1df0827d013ad2ffS3VersionKey983DBE96",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.6",
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "AssetParameters8ac1f64e10898dad56cc8b357e40b7a3aa5708bc5aec546718c66c605b3c438cS3BucketE9317EA1",
+                      },
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "AssetParameters8ac1f64e10898dad56cc8b357e40b7a3aa5708bc5aec546718c66c605b3c438cS3BucketE9317EA1",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "shortenerBucket34519652",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "shortenerBucket34519652",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "Roles": Array [
+          Object {
+            "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "shortenerAPIAccount4DD89EBF": Object {
       "DependsOn": Array [
         "shortenerAPID8E48A72",
@@ -460,7 +725,7 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParametersf8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6dS3BucketF8F50D82",
+            "Ref": "AssetParametersba60cbb49b876b2b5e6eddd103e4aeebf0fdabe220fecd9ba54cfabb0d3200d5S3Bucket6FE22E6A",
           },
           "S3Key": Object {
             "Fn::Join": Array [
@@ -473,7 +738,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersf8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6dS3VersionKeyA7FF3015",
+                          "Ref": "AssetParametersba60cbb49b876b2b5e6eddd103e4aeebf0fdabe220fecd9ba54cfabb0d3200d5S3VersionKeyD29C4406",
                         },
                       ],
                     },
@@ -486,7 +751,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParametersf8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6dS3VersionKeyA7FF3015",
+                          "Ref": "AssetParametersba60cbb49b876b2b5e6eddd103e4aeebf0fdabe220fecd9ba54cfabb0d3200d5S3VersionKeyD29C4406",
                         },
                       ],
                     },
@@ -595,6 +860,51 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
+    "shortenerBucket34519652": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "project",
+            "Value": "shortener",
+          },
+        ],
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "shortenerBucketPolicy54BFB7F2": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "shortenerBucket34519652",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Principal": "*",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "shortenerBucket34519652",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
     "shortenerCustomDomainDE8FD5C8": Object {
       "Properties": Object {
         "CertificateArn": "arn:aws:acm:us-west-2:dummy:certificate/c3b5dab4-ba98-4422-a34a-7ccca2bf1c5d",
@@ -626,6 +936,62 @@ Object {
         },
       },
       "Type": "AWS::ApiGateway::BasePathMapping",
+    },
+    "shortenerFaviconDeploymentCustomResource22098E82": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "DestinationBucketName": Object {
+          "Ref": "shortenerBucket34519652",
+        },
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+            "Arn",
+          ],
+        },
+        "SourceBucketNames": Array [
+          Object {
+            "Ref": "AssetParameters8ac1f64e10898dad56cc8b357e40b7a3aa5708bc5aec546718c66c605b3c438cS3BucketE9317EA1",
+          },
+        ],
+        "SourceObjectKeys": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters8ac1f64e10898dad56cc8b357e40b7a3aa5708bc5aec546718c66c605b3c438cS3VersionKey65CA1E21",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters8ac1f64e10898dad56cc8b357e40b7a3aa5708bc5aec546718c66c605b3c438cS3VersionKey65CA1E21",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "Custom::CDKBucketDeployment",
+      "UpdateReplacePolicy": "Delete",
     },
     "shortenerTable025392D9": Object {
       "DeletionPolicy": "Retain",

@@ -1,8 +1,10 @@
 import * as apigateway from '@aws-cdk/aws-apigateway';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import * as core from '@aws-cdk/core';
 import * as certmgr from '@aws-cdk/aws-certificatemanager';
+import * as dynamodb from '@aws-cdk/aws-dynamodb';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as s3 from '@aws-cdk/aws-s3';
+import * as s3deploy from '@aws-cdk/aws-s3-deployment';
+import * as core from '@aws-cdk/core';
 import * as path from 'path';
 
 export class ShortenerStack extends core.Stack {
@@ -73,10 +75,19 @@ export class ShortenerStack extends core.Stack {
     // allow the lambda function to r/w date into the dynamodb table
     table.grantReadData(getFnc);
 
-    new core.CfnOutput(this, 'shortenerCustomOrigin', {
-      value: this.origin,
-      description: 'The value of the custom shortener origin',
-      exportName: 'ShortenerCustomOrigin',
+    // the favicon will be redirected through cloudflare, if required
+    const bucket = new s3.Bucket(this, 'shortenerBucket', {
+      publicReadAccess: true,
+    });
+
+    new s3deploy.BucketDeployment(this, 'shortenerFaviconDeployment', {
+      sources: [s3deploy.Source.asset(path.join(__dirname, 'static'))],
+      destinationBucket: bucket,
+    });
+
+    new core.CfnOutput(this, 'shortenerCustomOrigin', { value: this.origin });
+    new core.CfnOutput(this, 'shortenerFaviconURL', {
+      value: bucket.urlForObject('static/favicon.ico'),
     });
 
     core.Tag.add(this, 'project', 'shortener');

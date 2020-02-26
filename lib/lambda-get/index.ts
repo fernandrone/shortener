@@ -25,7 +25,7 @@ export const handler = async (event: any = {}): Promise<any> => {
 
   console.info(`Received 'value' '${resource}' (lenght: '${resource.length}')`);
 
-  // this quick check will block all '.php' and '.favico' requests
+  // this quick check will block all '.php' requests
   if (resource.includes('.')) {
     console.error(`Invalid path/resource`);
     return abort();
