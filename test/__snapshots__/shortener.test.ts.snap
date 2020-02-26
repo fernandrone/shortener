@@ -25,7 +25,7 @@ Object {
         ],
       },
     },
-    "shortenerOrigin": Object {
+    "shortenerCustomOrigin": Object {
       "Description": "The value of the custom shortener origin",
       "Export": Object {
         "Name": "ShortenerCustomOrigin",
@@ -34,28 +34,16 @@ Object {
     },
   },
   "Parameters": Object {
-    "AssetParameters0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0ArtifactHashF8F836D1": Object {
-      "Description": "Artifact hash for asset \\"0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0\\"",
+    "AssetParametersf8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6dArtifactHash6C0EC269": Object {
+      "Description": "Artifact hash for asset \\"f8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6d\\"",
       "Type": "String",
     },
-    "AssetParameters0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0S3Bucket0997A4A0": Object {
-      "Description": "S3 bucket for asset \\"0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0\\"",
+    "AssetParametersf8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6dS3BucketF8F50D82": Object {
+      "Description": "S3 bucket for asset \\"f8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6d\\"",
       "Type": "String",
     },
-    "AssetParameters0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0S3VersionKey83D9C166": Object {
-      "Description": "S3 key for asset version \\"0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0\\"",
-      "Type": "String",
-    },
-    "AssetParameters6cdb29084b423d21373c833aae6b3cf1c636bb545944d142bfa6443d809515a9ArtifactHash27A23F47": Object {
-      "Description": "Artifact hash for asset \\"6cdb29084b423d21373c833aae6b3cf1c636bb545944d142bfa6443d809515a9\\"",
-      "Type": "String",
-    },
-    "AssetParameters6cdb29084b423d21373c833aae6b3cf1c636bb545944d142bfa6443d809515a9S3BucketE3073F7A": Object {
-      "Description": "S3 bucket for asset \\"6cdb29084b423d21373c833aae6b3cf1c636bb545944d142bfa6443d809515a9\\"",
-      "Type": "String",
-    },
-    "AssetParameters6cdb29084b423d21373c833aae6b3cf1c636bb545944d142bfa6443d809515a9S3VersionKey6D86E7F4": Object {
-      "Description": "S3 key for asset version \\"6cdb29084b423d21373c833aae6b3cf1c636bb545944d142bfa6443d809515a9\\"",
+    "AssetParametersf8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6dS3VersionKeyA7FF3015": Object {
+      "Description": "S3 key for asset version \\"f8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6d\\"",
       "Type": "String",
     },
   },
@@ -123,7 +111,7 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "shortenerAPIDeployment1BF02EFDe1b1eb368f810c89fa746524fe9ad237": Object {
+    "shortenerAPIDeployment1BF02EFD17386b90eca5b23f302670100762e104": Object {
       "DependsOn": Array [
         "shortenerAPIproxyGETC4CEEED1",
         "shortenerAPIproxyOPTIONS7E5BFB22",
@@ -142,7 +130,7 @@ Object {
     "shortenerAPIDeploymentStageprod26C06356": Object {
       "Properties": Object {
         "DeploymentId": Object {
-          "Ref": "shortenerAPIDeployment1BF02EFDe1b1eb368f810c89fa746524fe9ad237",
+          "Ref": "shortenerAPIDeployment1BF02EFD17386b90eca5b23f302670100762e104",
         },
         "MethodSettings": Array [
           Object {
@@ -275,7 +263,7 @@ Object {
             Object {
               "ResponseParameters": Object {
                 "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET'",
                 "method.response.header.Access-Control-Allow-Origin": "'https://fdr.one'",
                 "method.response.header.Vary": "'Origin'",
               },
@@ -432,7 +420,7 @@ Object {
             Object {
               "ResponseParameters": Object {
                 "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET'",
                 "method.response.header.Access-Control-Allow-Origin": "'https://fdr.one'",
                 "method.response.header.Vary": "'Origin'",
               },
@@ -464,28 +452,6 @@ Object {
       },
       "Type": "AWS::ApiGateway::Method",
     },
-    "shortenerAliasRecordDDE56FDF": Object {
-      "Properties": Object {
-        "AliasTarget": Object {
-          "DNSName": Object {
-            "Fn::GetAtt": Array [
-              "shortenerCustomDomainDE8FD5C8",
-              "DistributionDomainName",
-            ],
-          },
-          "HostedZoneId": Object {
-            "Fn::GetAtt": Array [
-              "shortenerCustomDomainDE8FD5C8",
-              "DistributionHostedZoneId",
-            ],
-          },
-        },
-        "HostedZoneId": "DUMMY",
-        "Name": "fdr.one.",
-        "Type": "A",
-      },
-      "Type": "AWS::Route53::RecordSet",
-    },
     "shortenerBackendBFAB597E": Object {
       "DependsOn": Array [
         "shortenerBackendServiceRoleDefaultPolicy7DD91C30",
@@ -494,7 +460,7 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParameters6cdb29084b423d21373c833aae6b3cf1c636bb545944d142bfa6443d809515a9S3BucketE3073F7A",
+            "Ref": "AssetParametersf8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6dS3BucketF8F50D82",
           },
           "S3Key": Object {
             "Fn::Join": Array [
@@ -507,7 +473,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParameters6cdb29084b423d21373c833aae6b3cf1c636bb545944d142bfa6443d809515a9S3VersionKey6D86E7F4",
+                          "Ref": "AssetParametersf8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6dS3VersionKeyA7FF3015",
                         },
                       ],
                     },
@@ -520,7 +486,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParameters6cdb29084b423d21373c833aae6b3cf1c636bb545944d142bfa6443d809515a9S3VersionKey6D86E7F4",
+                          "Ref": "AssetParametersf8be868c53b8ca0c9cf4c1d546639e39f5690613788503343a42926f06394d6dS3VersionKeyA7FF3015",
                         },
                       ],
                     },
@@ -629,174 +595,9 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "shortenerCertCertificateRequestorFunctionE626283C": Object {
-      "DependsOn": Array [
-        "shortenerCertCertificateRequestorFunctionServiceRoleDefaultPolicy8E443F6F",
-        "shortenerCertCertificateRequestorFunctionServiceRole880ADB54",
-      ],
-      "Properties": Object {
-        "Code": Object {
-          "S3Bucket": Object {
-            "Ref": "AssetParameters0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0S3Bucket0997A4A0",
-          },
-          "S3Key": Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                Object {
-                  "Fn::Select": Array [
-                    0,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0S3VersionKey83D9C166",
-                        },
-                      ],
-                    },
-                  ],
-                },
-                Object {
-                  "Fn::Select": Array [
-                    1,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters0b9723d54b7db3fbfc1a143398b02392e5fe080a68535480782a949b4372d0f0S3VersionKey83D9C166",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            ],
-          },
-        },
-        "Handler": "index.certificateRequestHandler",
-        "Role": Object {
-          "Fn::GetAtt": Array [
-            "shortenerCertCertificateRequestorFunctionServiceRole880ADB54",
-            "Arn",
-          ],
-        },
-        "Runtime": "nodejs10.x",
-        "Tags": Array [
-          Object {
-            "Key": "project",
-            "Value": "shortener",
-          },
-        ],
-        "Timeout": 900,
-      },
-      "Type": "AWS::Lambda::Function",
-    },
-    "shortenerCertCertificateRequestorFunctionServiceRole880ADB54": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "lambda.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                "arn:",
-                Object {
-                  "Ref": "AWS::Partition",
-                },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-              ],
-            ],
-          },
-        ],
-        "Tags": Array [
-          Object {
-            "Key": "project",
-            "Value": "shortener",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "shortenerCertCertificateRequestorFunctionServiceRoleDefaultPolicy8E443F6F": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "acm:RequestCertificate",
-                "acm:DescribeCertificate",
-                "acm:DeleteCertificate",
-              ],
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-            Object {
-              "Action": "route53:GetChange",
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-            Object {
-              "Action": "route53:changeResourceRecordSets",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:",
-                    Object {
-                      "Ref": "AWS::Partition",
-                    },
-                    ":route53:::hostedzone/DUMMY",
-                  ],
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "shortenerCertCertificateRequestorFunctionServiceRoleDefaultPolicy8E443F6F",
-        "Roles": Array [
-          Object {
-            "Ref": "shortenerCertCertificateRequestorFunctionServiceRole880ADB54",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "shortenerCertCertificateRequestorResource9C94F867": Object {
-      "DeletionPolicy": "Delete",
-      "Properties": Object {
-        "DomainName": "fdr.one",
-        "HostedZoneId": "DUMMY",
-        "ServiceToken": Object {
-          "Fn::GetAtt": Array [
-            "shortenerCertCertificateRequestorFunctionE626283C",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "AWS::CloudFormation::CustomResource",
-      "UpdateReplacePolicy": "Delete",
-    },
     "shortenerCustomDomainDE8FD5C8": Object {
       "Properties": Object {
-        "CertificateArn": Object {
-          "Fn::GetAtt": Array [
-            "shortenerCertCertificateRequestorResource9C94F867",
-            "Arn",
-          ],
-        },
+        "CertificateArn": "arn:aws:acm:us-west-2:dummy:certificate/c3b5dab4-ba98-4422-a34a-7ccca2bf1c5d",
         "DomainName": "fdr.one",
         "EndpointConfiguration": Object {
           "Types": Array [
