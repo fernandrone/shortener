@@ -4,8 +4,6 @@ import * as core from '@aws-cdk/core';
 import * as certmgr from '@aws-cdk/aws-certificatemanager';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as path from 'path';
-import * as route53 from '@aws-cdk/aws-route53';
-import * as targets from '@aws-cdk/aws-route53-targets';
 
 export class ShortenerStack extends core.Stack {
   readonly domain = 'fdr.one';
@@ -28,15 +26,12 @@ export class ShortenerStack extends core.Stack {
       },
     });
 
-    const hostedZone = route53.HostedZone.fromLookup(this, 'shortenerHostedZone', {
-      domainName: this.domain,
-      privateZone: false,
-    });
-
-    const certificate = new certmgr.DnsValidatedCertificate(this, 'shortenerCert', {
-      domainName: this.domain,
-      hostedZone,
-    });
+    const certificate = certmgr.Certificate.fromCertificateArn(
+      this,
+      'shortenerCert',
+      // TODO inject this as a parameter
+      `arn:aws:acm:${this.region}:${this.account}:certificate/c3b5dab4-ba98-4422-a34a-7ccca2bf1c5d`,
+    );
 
     const customDomain = new apigateway.DomainName(this, 'shortenerCustomDomain', {
       domainName: this.domain,
@@ -45,13 +40,6 @@ export class ShortenerStack extends core.Stack {
     });
 
     customDomain.addBasePathMapping(api);
-
-    new route53.ARecord(this, 'shortenerAliasRecord', {
-      zone: hostedZone,
-      target: route53.RecordTarget.fromAlias(
-        new targets.ApiGatewayDomain(customDomain),
-      ),
-    });
 
     const table = new dynamodb.Table(this, 'shortenerTable', {
       partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
