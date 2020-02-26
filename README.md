@@ -29,3 +29,9 @@ Simply running `make` or `make all` will run both `make synth` and `make deploy`
 ## Custom Domain
 
 This personal project uses my `fdr.one` domain, and requires an existing public domain.
+
+## Free Tier
+
+The idea behind this project is to host personal URL shortener, relying only on AWS and Cloudflare Free Tier (unfortunately I still have to pay for the domain `fdr.one`, which costs me about 9 USD/year).
+
+To view AWS Free Tier usage [click here](https://console.aws.amazon.com/billing/home?region=us-east-1#/freetier).
